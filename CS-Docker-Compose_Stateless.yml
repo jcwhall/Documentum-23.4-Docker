@@ -2,28 +2,28 @@
 version: '3.7'
 services:
   rcs:
-    image: csimagename
+    image: registry.opentext.com/dctm-server:23.4
     environment:
-      - DOCKER_HOST=10.31.169.35
-      - DATABASE_HOST=postgres-dctm-23.4
+      - DOCKER_HOST=127.0.0.1
+      - DATABASE_HOST=postgres
       - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=password
+      - DATABASE_PASSWORD=QnDCV2bswh8eE-rU
       - DATABASE_SERVER_PORT=5432
-      - SERVICE_NAME=postgres
-      - ROOT_PASSWORD=${ROOT_PASSWORD}
+      - SERVICE_NAME=dctm
+      - ROOT_PASSWORD=qU2yevAn_rX6Hw84
       - INSTALL_OWNER=dmadmin
-      - INSTALL_OWNER_PASSWORD=${INSTALL_OWNER_PASSWORD}
-      - DOCBASE_NAME=DocbaseName
-      - GLOBAL_REGISTRY_PASSWORD=${GLOBAL_REGISTRY_PASSWORD}
+      - INSTALL_OWNER_PASSWORD=N_Yu7p-@Ggwk5J8V
+      - DOCBASE_NAME=dctm
+      - GLOBAL_REGISTRY_PASSWORD=N_Yu7p-@Ggwk5J8V
       - AEK_ALGORITHM=AES_256_CBC
-      - AEK_PASSPHRASE=${AEK_PASSPHRASE}
+      - AEK_PASSPHRASE=LXA7Q3vpB_dTqmSu
       - AEK_NAME=CSaek
       - CONFIGURE_THUMBNAIL_SERVER=NO
       - THUMBNAIL_SERVER_PORT=8081
       - THUMBNAIL_SERVER_SSL_PORT=8443
       - EXTERNAL_DOCBROKER_PORT=1689
       - CONTENTSERVER_PORT=50000
-      - APP_SERVER_PASSWORD=${APP_SERVER_PASSWORD}
+      - APP_SERVER_PASSWORD=N_Yu7p-@Ggwk5J8V
       - INSTALL_OWNER_UID=1000
       - HIGH_VOLUME_SERVER_LICENSE=
       - TRUSTED_LICENSE=
@@ -34,7 +34,7 @@ services:
       - FED_RECD_SERVICE_LICENSE=
       - RECORD_MANAGER_LICENSE=
       - PRM_LICENSE=
-      - DOCBASE_PASSWORD=${DOCBASE_PASSWORD}
+      - DOCBASE_PASSWORD=N_Yu7p-@Ggwk5J8V
       - INSTALLER_UI=silent
       - KEEP_TEMP_FILE=false
       - INSTALLER_DEBUG_LOG=true
@@ -49,59 +49,47 @@ services:
       - SMTP_PORT=25
       - SMTP_AUTH=false
       - SMTP_USER=admin@smtpserver
-      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_PASS=password
       - SMTP_SSL=false
       - DM_CRYPTO_MIN_PASSWORD_LENGTH=16
     hostname:
-      "conatiner_hostname"
+      "dctm-23.4-cs"
     container_name:
-      "containername"
+      "dctm-23.4-cs"
     ports:
-      - "DOCBROKER_PORT:DOCBROKER_PORT"
-      - "DOCBROKER_SECURE_PORT:DOCBROKER_SECURE_PORT"
-      - "CONTENT_SERVER_PORT:CONTENT_SERVER_PORT"
-      - "CONTENT_SERVER_SECURE_PORT:CONTENT_SERVER_SECURE_PORT"
-      - "METHOD_SVR_PORT:9080"
-      - "METHOD_SVR_SECURE_PORT:9082"
-      - "METHOD_SVR_JMX_PORT:9081"
-      - "APP_SERVER_MGMNT_PORT:9084"
-      - "THUMBNAIL_SERVER_PORT:8081"
-      - "THUMBNAIL_SERVER_SSL_PORT:8443"
+      - "1689:1689"
+      - "1690:1690"
+      - "50000:50000"
+      - "50001:50001"
+      - "9080:9080"
+      - "9082:9082"
+      - "9081:9081"
+      - "9084:9084"
+      - "8081:8081"
+      - "8443:8443"
     volumes:
-      - DocbaseName_odbc:/opt/dctm/odbc
-      - DocbaseName_data:/opt/dctm/data
-      - DocbaseName_dba:/opt/dctm/dba
-      - DocbaseName_share:/opt/dctm/share
-      - DocbaseName_dfc:/opt/dctm/config
-      - DocbaseName_mdserver_conf:/opt/dctm/mdserver_conf
-      - DocbaseName_mdserver_logs:/opt/dctm/tomcat10.1.13/logs
-      - DocbaseName_Thumbnail_Server_conf:/opt/dctm/product/23.4/thumbsrv/conf
-      - DocbaseName_Thumbnail_Server_webinf:/opt/dctm/product/23.4/thumbsrv/container/webapps/thumbsrv/WEB-INF
-      - DocbaseName_MigrationUtility:/opt/dctm/product/23.4/install/external_apps/MigrationUtil
+      - dctm_odbc:/opt/dctm/odbc
+      - dctm_data:/opt/dctm/data
+      - dctm_dba:/opt/dctm/dba
+      - dctm_share:/opt/dctm/share
+      - dctm_dfc:/opt/dctm/config
+      - dctm_mdserver_conf:/opt/dctm/mdserver_conf
+      - dctm_mdserver_logs:/opt/dctm/tomcat10.1.13/logs
+      - dctm_Thumbnail_Server_conf:/opt/dctm/product/23.4/thumbsrv/conf
+      - dctm_Thumbnail_Server_webinf:/opt/dctm/product/23.4/thumbsrv/container/webapps/thumbsrv/WEB-INF
+      - dctm_MigrationUtility:/opt/dctm/product/23.4/install/external_apps/MigrationUtil
     privileged: true
 #'volumes' service definition: 
 volumes:
- DocbaseName_data:
-    driver: local
-    driver_opts:
-      share: EXTERNALDATA_HOST:DOCUMENTUM_SHARE_PATH
- DocbaseName_share:
-    driver: local
-    driver_opts:
-      share: EXTERNALDATA_HOST:DOCUMENTUM_SHARE_PATH
- DocbaseName_dba:
- DocbaseName_dfc:
- DocbaseName_odbc:
- DocbaseName_mdserver_conf:
- DocbaseName_mdserver_logs:
- DocbaseName_Thumbnail_Server_conf:
- DocbaseName_Thumbnail_Server_webinf:
- DocbaseName_XhiveConnector:
-    driver: local
-    driver_opts:
-     share: EXTERNALDATA_HOST:DOCUMENTUM_SHARE_PATH
- DocbaseName_xhive_storage:
-    driver: local
-    driver_opts:
-      share: EXTERNALDATA_HOST:DOCUMENTUM_SHARE_PATH
- DocbaseName_MigrationUtility:
+ dctm_data:
+ dctm_share:
+ dctm_dba:
+ dctm_dfc:
+ dctm_odbc:
+ dctm_mdserver_conf:
+ dctm_mdserver_logs:
+ dctm_Thumbnail_Server_conf:
+ dctm_Thumbnail_Server_webinf:
+ dctm_XhiveConnector:
+ dctm_xhive_storage:
+ dctm_MigrationUtility:
