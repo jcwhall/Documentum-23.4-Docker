@@ -1,0 +1,61 @@
+version: '3'
+services:
+  indexserver: 
+    image: 
+      registry.opentext.com/dctm-xplore-indexserver:22.1.4
+    hostname: 
+      indexserver
+    container_name:
+      indexserver
+    ports:
+      - "9300:9300"
+    networks:
+      - dctm-23.4
+    volumes:
+      - xplore:/opt/xPlore/rtdata
+  indexagent:
+    image: 
+      registry.opentext.com/dctm-xplore-indexagent:22.1.4
+    hostname: 
+      indexagent
+    container_name:
+      indexagent
+    ports:
+      - "9200:9200"
+    environment:
+      - ess_host=indexserver
+      - docbase_name=${DOCBASE_NAME}
+      - docbase_user=dmadmin
+      - docbase_password=${INSTALL_OWNER_PASSWORD}
+      - broker_host=dctm-cs
+      - broker_port=1489
+      - registry_name=${DOCBASE_NAME}
+      - registry_user=dm_bof_registry
+      - registry_password=${GLOBAL_REGISTRY_PASSWORD}
+    networks:
+      - dctm-23.4 
+    depends_on:
+      - indexserver
+    volumes:
+      - xplore:/opt/xPlore/rtdata
+  cps:
+    image: 
+      registry.opentext.com/dctm-xplore-cps:22.1.4
+    hostname: 
+      cps
+    container_name:
+      cps
+    environment:
+      - ess_host=indexserver
+    networks:
+      - dctm-23.4
+    depends_on:
+    - indexserver
+    volumes:
+    - xplore:/opt/xPlore/rtdata
+volumes:
+  xplore:
+
+networks:
+ dctm-23.4:
+  external: true

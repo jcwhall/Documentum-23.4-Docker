@@ -1,0 +1,41 @@
+version: '2'
+services:
+  da:
+    user: 1001:2001
+    image: registry.opentext.com/dctm-admin:23.4
+    environment:     
+     - DA_EXT_CONF=/opt/tomcat/webapps/da/external-configurations
+     - PREFER`=webtopUser@12345
+     - PRESETPASS=webtopUser@12345
+     - OTDS_PROPERTIES=otds_url=<OTDS_APP_URL>::client_id=<OTDS_CLIENT_ID>::client_secret=<OTDS_CLIENT_SECRET>::redirect_uri=<DA_APP_URI>
+     - APP_PROPERTIES=application.authentication.otds_sso.enabled=false::application.authentication.otds_sso.repo_selection_page_required=false::application.authentication.otds_sso.dm_login_ticket_timeout=250::application.language.supported_locales.locale=[en_US]::application.language.default_locale=en_US
+     - DFC_PROPERTIES=dfc.data.dir=<DFC_DATA_DIRECTORY>::dfc.tokenstorage.dir=<DFC_TOKENSTORAGE_DIRECTORY>::dfc.tokenstorage.enable=false::dfc.docbroker.host[0]=${DOCBASE_HOST}::dfc.docbroker.port[0]=1489::dfc.globalregistry.repository=${DOCBASE_NAME}::dfc.globalregistry.username=dm_bof_registry::dfc.globalregistry.password=${GLOBAL_REGISTRY_PASSWORD}::dfc.session.allow_trusted_login=false::dfc.security.ssl.use_anonymous_cipher=true
+     - DCTM_REPORTS_ENABLE=false
+     - DCTM_REPORTS_HOST=https://<fully qualified ingress host>/dtr
+    hostname:
+      dctm-da
+    container_name:
+      dctm-da
+    ports:
+     - "8080:8080"
+    networks:
+      - dctm-23.4
+    volumes:
+     - da-ext-conf:/opt/tomcat/webapps/da/external-configurations    
+     - da-tomcat-logs:/opt/tomcat/logs
+     - da-documentum-logs:/home/daadmin/documentum/logs
+     - da-custom:/opt/tomcat/webapps/da/custom
+     - da-certificate:/opt/dctm/certificate
+    privileged: true
+    env_file:
+      - .env
+volumes:
+  da-ext-conf:
+  da-tomcat-logs:
+  da-documentum-logs:  
+  da-custom:
+  da-certificate:
+
+networks:
+ dctm-23.4:
+  external: true

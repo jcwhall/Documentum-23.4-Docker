@@ -1,29 +1,28 @@
-#For description of parameter please do refer to Readme.txt
-version: '3.7'
+version: '3.8'
 services:
   rcs:
     image: registry.opentext.com/dctm-server:23.4
     environment:
       - DOCKER_HOST=127.0.0.1
-      - DATABASE_HOST=postgres
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=QnDCV2bswh8eE-rU
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_SERVER_PORT=5432
-      - SERVICE_NAME=dctm
-      - ROOT_PASSWORD=qU2yevAn_rX6Hw84
+      - SERVICE_NAME=MyPostgres
+      - ROOT_PASSWORD=${ROOT_PASSWORD}
       - INSTALL_OWNER=dmadmin
-      - INSTALL_OWNER_PASSWORD=N_Yu7p-@Ggwk5J8V
-      - DOCBASE_NAME=dctm
-      - GLOBAL_REGISTRY_PASSWORD=N_Yu7p-@Ggwk5J8V
+      - INSTALL_OWNER_PASSWORD=${INSTALL_OWNER_PASSWORD}
+      - DOCBASE_NAME=${DOCBASE_NAME}
+      - GLOBAL_REGISTRY_PASSWORD=${GLOBAL_REGISTRY_PASSWORD}
       - AEK_ALGORITHM=AES_256_CBC
-      - AEK_PASSPHRASE=LXA7Q3vpB_dTqmSu
-      - AEK_NAME=CSaek
+      - AEK_PASSPHRASE=${AEK_PASSPHRASE}
+      - AEK_NAME=aek.key
       - CONFIGURE_THUMBNAIL_SERVER=NO
       - THUMBNAIL_SERVER_PORT=8081
       - THUMBNAIL_SERVER_SSL_PORT=8443
       - EXTERNAL_DOCBROKER_PORT=1689
       - CONTENTSERVER_PORT=50000
-      - APP_SERVER_PASSWORD=N_Yu7p-@Ggwk5J8V
+      - APP_SERVER_PASSWORD=${APP_SERVER_PASSWORD}
       - INSTALL_OWNER_UID=1000
       - HIGH_VOLUME_SERVER_LICENSE=
       - TRUSTED_LICENSE=
@@ -34,7 +33,7 @@ services:
       - FED_RECD_SERVICE_LICENSE=
       - RECORD_MANAGER_LICENSE=
       - PRM_LICENSE=
-      - DOCBASE_PASSWORD=N_Yu7p-@Ggwk5J8V
+      - DOCBASE_PASSWORD=${DOCBASE_PASSWORD}
       - INSTALLER_UI=silent
       - KEEP_TEMP_FILE=false
       - INSTALLER_DEBUG_LOG=true
@@ -49,13 +48,13 @@ services:
       - SMTP_PORT=25
       - SMTP_AUTH=false
       - SMTP_USER=admin@smtpserver
-      - SMTP_PASS=password
+      - SMTP_PASS=${SMTP_PASS}
       - SMTP_SSL=false
       - DM_CRYPTO_MIN_PASSWORD_LENGTH=16
     hostname:
-      "dctm-23.4-cs"
+      "dctm-cs"
     container_name:
-      "dctm-23.4-cs"
+      "dctm-cs"
     ports:
       - "1689:1689"
       - "1690:1690"
@@ -67,6 +66,8 @@ services:
       - "9084:9084"
       - "8081:8081"
       - "8443:8443"
+    networks:
+      - dctm-23.4
     volumes:
       - dctm_odbc:/opt/dctm/odbc
       - dctm_data:/opt/dctm/data
@@ -75,11 +76,11 @@ services:
       - dctm_dfc:/opt/dctm/config
       - dctm_mdserver_conf:/opt/dctm/mdserver_conf
       - dctm_mdserver_logs:/opt/dctm/tomcat10.1.13/logs
-      - dctm_Thumbnail_Server_conf:/opt/dctm/product/23.4/thumbsrv/conf
-      - dctm_Thumbnail_Server_webinf:/opt/dctm/product/23.4/thumbsrv/container/webapps/thumbsrv/WEB-INF
-      - dctm_MigrationUtility:/opt/dctm/product/23.4/install/external_apps/MigrationUtil
+      - dctm_Thumbnail_Server_conf:/opt/dctm/product/23.2/thumbsrv/conf
+      - dctm_Thumbnail_Server_webinf:/opt/dctm/product/23.2/thumbsrv/container/webapps/thumbsrv/WEB-INF
+      - dctm_MigrationUtility:/opt/dctm/product/23.2/install/external_apps/MigrationUtil
     privileged: true
-#'volumes' service definition: 
+    
 volumes:
  dctm_data:
  dctm_share:
@@ -93,3 +94,7 @@ volumes:
  dctm_XhiveConnector:
  dctm_xhive_storage:
  dctm_MigrationUtility:
+
+networks:
+ dctm-23.4:
+  external: true
