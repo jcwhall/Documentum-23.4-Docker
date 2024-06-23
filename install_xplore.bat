@@ -1,0 +1,1 @@
+docker-compose -f compose-xplore.yml up -d
