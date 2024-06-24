@@ -1,1 +1,1 @@
-docker-compose -f compose-xplore.yml up -d
+docker-compose -f compose_xplore.yml up -d
